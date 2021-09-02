@@ -49,21 +49,17 @@ def ask():
 
 def check():
     if math.log10(A) == int(math.log10(A)):
-        print('godkänt')
         global verify
         verify += 1
     else:
         print('icke godkänt tal A')
         print(A)
-        print(math.log10(A))
 
     if math.log10(B) == int(math.log10(B)):
-        print('godkänt')
         verify += 1
     else:
         print('icke godkänt tal B')
         print(B)
-        print(math.log10(B))
 
 def calculate():
     if op == '*':
@@ -77,11 +73,11 @@ def calculate():
 
 def end():
     print('''vill du fortsätta?
-    (skriv "Ja" För att fortsätta.''')
+    (skriv "q" För att Avsluta.''')
     global run
     run = input('->')
 
-    if run == 'Ja':
+    if run == 'q':
         global i
         i += 1
     
