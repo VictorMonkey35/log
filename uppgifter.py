@@ -1,20 +1,9 @@
-#översätt en mening till rövarspråket.
+x = 'vadsomhellst'
+dic = {'a': x, "b": x, "c": x, "d": x, 'e': x, "f": x, "g": x, "h": x, 'i': x, "j": x, "k": x, "l": x, "m": x, 'n': x, 'o': x, 'p': x, 'q': x, 'r': x, 's': x, 't': x, 'u': x, 'v': x, 'x': x, 'y': x, 'z': x, 'å': x, 'ä': x, 'ö': x}
 
-#A B C D E F G H I J K L M N O P Q R S T U V X Y Z Å Ä Ö
-#  B C D   F G H   J K L M N   P Q R S T   V X   Z
+print('please contribute to society')
+input = input('->')
+list = input.split(' ')
+meaning = ' '
 
-dic = {'a': 'a', "b": "bob", "c": "coc", "d": "dod", 'e': 'e', "f": "fof", "g": "gog", "h": "hoh", 'i': 'i', "j": "joj", "k": "kok", "l": "lol", "m": 'mom', 'n': 'non', 'o': 'o', 'p': 'pop', 'q': 'qoq', 'r': 'ror', 's': 'sos', 't': 'tot', 'u': 'u', 'v': 'vov', 'x': 'xox', 'y': 'y', 'z': 'zoz', 'å': 'å', 'ä': 'ä', 'ö': 'ö'} 
-
-ord = input('skriv ord ->')
-
-ord = ord.lower()
-
-sos = []
-
-sos.append(ord)
-
-print(sos)
-
-#gör dic för alfabet
-#gör input till lista
-#gör funktion som gör varje bokstav,listobjekt, till sin dic verision.
+print(dic['a'])
