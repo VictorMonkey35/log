@@ -18,5 +18,5 @@ class person(medlemm):
         super().__init__(efternamn, roll, namn)
         self.ålder = ålder
 
-rufus = person('Hedgardt', 'son', 'rufus', 18)
-katt = husdjur('Hedgardt', 'djur', 'gandalf', 3)
+jag = person('Forsebäck', 'son', 'victor', 18)
+katt = husdjur('Forsebäck', 'djur', 'dog', 3)
