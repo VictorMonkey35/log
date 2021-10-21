@@ -1,3 +1,5 @@
+import time as t
+
 import os
 from typing import get_args
 os.system('cls')
@@ -38,21 +40,21 @@ for i in range(lamps):
         höger.append(str(lampor[i]))
     elif r*2 <= i <= (r*3)-1:
         ned.append(str(lampor[i]))
-    else:
+    elif (r*3) <= i <= (r*4)-1:
         vänster.append(str(lampor[i]))
+    else:
+        print('bogg')
 
 vitarutor = 0
 
 for i in range(r):
     for j in range(r):
         colset = {}
-        colset.add(upp[j])
-        colset.add(ned[j - r])
-        colset.add(vänster[i - r])
-        colset.add(höger[i])
+        colset.clear()
+        colset = {upp[j], ned[r-j-1], vänster[r-i-1], höger[i]}
         if len(colset) == 3:
             vitarutor += 1
         else:
-            pass
+            vitarutor += 0
 
 print(f'Rutnätet har {vitarutor} av {rutor} antal vita rutor.')
