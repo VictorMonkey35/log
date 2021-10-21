@@ -16,7 +16,7 @@ for i in range(1, lamps + 1):
     while runvar == True:
         try:
             os.system('cls')
-            print(f'''Du har {r} antal rader och {lamps} stycken lampor.
+            print(f'''Du har {r} lampor per rad och {lamps} stycken lampor.
 Lampa 1 är den vänstra i övre raden. Du går sedan medurs.
 ange färgen för lampa {i}(rgb).''')
             x = input('->')
@@ -32,14 +32,27 @@ ned = []
 vänster = []
 
 for i in range(lamps):
-    if 0 <= i <= r:
-        #append uppe
-    elif r <= i <= r*2:
-        #append höger
-    elif r*2 <= i <= r*3:
-        #append nere
-    else r*3 <= i <= r*4:
-        #append vänster
+    if 0 <= i <= r-1:
+        upp.append(str(lampor[i]))
+    elif r <= i <= (r*2)-1:
+        höger.append(str(lampor[i]))
+    elif r*2 <= i <= (r*3)-1:
+        ned.append(str(lampor[i]))
+    else:
+        vänster.append(str(lampor[i]))
 
+vitarutor = 0
 
-print(lampor)
+for i in range(r):
+    for j in range(r):
+        colset = {}
+        colset.add(upp[j])
+        colset.add(ned[j - r])
+        colset.add(vänster[i - r])
+        colset.add(höger[i])
+        if len(colset) == 3:
+            vitarutor += 1
+        else:
+            pass
+
+print(f'Rutnätet har {vitarutor} av {rutor} antal vita rutor.')
