@@ -1,7 +1,4 @@
-import time as t
-
 import os
-from typing import get_args
 os.system('cls')
 
 print('Ange antal kolumner/rader')
@@ -57,4 +54,7 @@ for i in range(r):
         else:
             vitarutor += 0
 
+os.system('cls')
 print(f'Rutnätet har {vitarutor} av {rutor} antal vita rutor.')
+input()
+os.system('cls')
