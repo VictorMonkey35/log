@@ -1,5 +1,6 @@
 import tkinter as tk
 import os
+from tkinter.constants import BOTH, YES
 os.system('cls')
 guestNames = []
 guestAges = []
@@ -18,12 +19,18 @@ def register():
         print(guestAges)
 
 window = tk.Tk()
+window.geometry('600x600')
+
+bg = tk.Canvas(window)
+bg.pack(expand=YES, fill=BOTH)
+img = tk.PhotoImage(file='material/among.png')
+bg.create_image(image=img)
 
 text = tk.Label(window, text='''Welcome to the Amogus Festival™!
 Please register yourself.''', anchor=tk.CENTER)
 text.pack()
 
-name = tk.Entry(window, bd=5, text='name')
+name = tk.Entry(window, bd=5, text='name',)
 name.pack()
 
 age = tk.Spinbox(window, from_=18, to=80)
@@ -34,10 +41,7 @@ reg.pack()
 
 window.mainloop()
 
+amongus = tk.Tk()
+
 os.system('cls')
-for i in range(len(guestAges)):
-    print(f'''Deltagare {i+1}: 
-Namn: {guestNames[i]}.
-Ålder: {guestAges[i]}.
-''')
 input()
