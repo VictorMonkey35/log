@@ -3,7 +3,7 @@
 import tkinter as tk
 import time as t
 import os
-from tkinter.constants import ANCHOR, CENTER
+from tkinter.constants import ANCHOR, CENTER, NW
 
 HEIGHT = 370
 WIDTH = 600
@@ -14,6 +14,8 @@ main.geometry('600x370')
 canvas = tk.Canvas(main, height = HEIGHT, width = WIDTH,  bd = 0, bg = 'grey')
 canvas.place(x = WIDTH/2, y = HEIGHT/2, anchor = CENTER)
 #fin bild som bakgrund
+
+
 
 frame = tk.Frame(main, height = HEIGHT/2, width = WIDTH/1.4, bg = 'white')
 frame.place(x = WIDTH/2, y = HEIGHT/2, anchor = CENTER)
