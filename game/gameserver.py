@@ -1,7 +1,5 @@
-from concurrent.futures import thread
 import socket as so
 import _thread as th
-
 
 def start_server():
     s = so.socket()

@@ -12,7 +12,7 @@ def threaded_client(conn):
     a = conn.recv(1024)
     msg = a.decode("utf-16")
     for i in connections:
-        if i  == conn:
+        if i == conn:
             pass
         else:
             i.send(msg.encode('utf-16'))
@@ -21,6 +21,7 @@ def threaded_client(conn):
 
 from _thread import *
 s = start_server()
+
 ThreadCount = 0
 connections = []
 
