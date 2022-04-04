@@ -19,13 +19,19 @@
 
 #economy class, adala plus, bussines class
 
+import mysql.connector
 import tkinter as tk
 import time as t
 import _thread as th
 import socket as so
 
+#dataBase = mysql.connector.connect(host = 'loclahost' , user = 'root' , password = '' , database = 'victorsdatabas')
+
+#mycursor = dataBase.cursor()
+
 tickval = 0
 menu = True
+booking = False
 
 c = tk.Tk()
 
@@ -60,7 +66,7 @@ def register():
     backb.place(anchor = tk.CENTER , x = 330 , y = 85)
 
 def login():
-    global menu
+    global menu, booking
     usernametitle.place_forget()
     username.place_forget()
     passwordtitle.place_forget()
@@ -69,6 +75,8 @@ def login():
     registertxt.place_forget()
     registerb.place_forget()
     menu = False
+    booking = True
+    start()
 
 def loginscreen():
     usernametitle.place_forget()
@@ -91,7 +99,7 @@ def loginscreen():
     registerb.place(anchor = tk.CENTER , x = 544 , y = 441)
 
 
-canvas = tk.Canvas(c , bg = 'white' , width = 960 ,  height = 600 , bd = 0)
+canvas = tk.Canvas(c , bg = 'lightgrey' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
 
 usernametitle = tk.Label(c , text = 'Username' , bd = 0 , bg = 'white')
@@ -112,6 +120,16 @@ fname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 lnametitle = tk.Label(c , text = 'Last name' , bd = 0 , bg = 'white')
 lname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
+
+mFrame = tk.Frame(c , bg = 'orange' , bd = 0 , height = 60 , width = 964)
+
+lFrame = tk.Frame(c , bg = 'green' , bd = 0 , height = 540 , width = 210)
+
+cFrame = tk.Frame(c , bg = 'blue' , bd = 0 , height = 80 , width = 460)
+
+dFrame = tk.Frame(c , bg = 'red' , bd = 0 , height = 540 , width = 300)
+
+fFrame = tk.Frame(c , bg = 'pink' , bd = 0 , height = 460 , width = 460)
 
 usernametitle.place(anchor = tk.CENTER , x = 415 , y = 215)
 username.place(anchor = tk.CENTER , x = 480 , y = 235)
@@ -137,6 +155,9 @@ def draw():
 
         canvas.create_image(480 , 270 , anchor = tk.CENTER , image = whitebox)
         canvas.create_image(480 , 155 , anchor = tk.CENTER , image = adalaLogo1)
+    
+    if booking == True:
+        pass
 
 def loop():
     canvas.delete('all')
@@ -145,6 +166,13 @@ def loop():
         tick()
     canvas.update()
     c.after(17 , func = loop)
+
+def start():
+    mFrame.place(anchor = tk.NW , x = 0 , y = 0)
+    lFrame.place(anchor = tk.NW , x = 0 , y = 60)
+    cFrame.place(anchor = tk.NW , x = 210 , y = 60)
+    dFrame.place(anchor = tk.NW , x = 670 , y = 60)
+    fFrame.place(anchor = tk.NW , x = 210 , y = 140)
 
 loop()
 
