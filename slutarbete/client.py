@@ -32,6 +32,9 @@ import socket as so
 tickval = 0
 menu = True
 booking = False
+date = 4
+
+months = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December']
 
 c = tk.Tk()
 
@@ -98,6 +101,24 @@ def loginscreen():
     registertxt.place(anchor = tk.CENTER , x = 455 , y = 440)
     registerb.place(anchor = tk.CENTER , x = 544 , y = 441)
 
+def dateup():
+    global date
+    if date == 12:
+        date = 1
+    
+    else:
+        date += 1
+
+
+def datedown():
+    global date
+    if date == 1:
+        date = 12
+    
+    else:
+        date -= 1  
+    
+
 
 canvas = tk.Canvas(c , bg = 'lightgrey' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
@@ -128,6 +149,9 @@ lFrame = tk.Frame(c , bg = 'green' , bd = 0 , height = 540 , width = 210)
 cFrame = tk.Frame(c , bg = 'blue' , bd = 0 , height = 80 , width = 460)
 
 dFrame = tk.Frame(c , bg = 'red' , bd = 0 , height = 540 , width = 300)
+bdbutton = tk.Button(dFrame , text = '<-' , command = datedown , bd = 0 , bg = 'white')
+fdbutton = tk.Button(dFrame , text = '->' , command = dateup , bd = 0 , bg = 'white')
+dtext = tk.Label(dFrame , text = months[date-1])
 
 fFrame = tk.Frame(c , bg = 'pink' , bd = 0 , height = 460 , width = 460)
 
@@ -169,9 +193,16 @@ def loop():
 
 def start():
     mFrame.place(anchor = tk.NW , x = 0 , y = 0)
+
     lFrame.place(anchor = tk.NW , x = 0 , y = 60)
+
     cFrame.place(anchor = tk.NW , x = 210 , y = 60)
+
     dFrame.place(anchor = tk.NW , x = 670 , y = 60)
+    bdbutton.place(anchor = tk.CENTER , x = 100 , y = 300)
+    fdbutton.place(anchor = tk.CENTER , x = 200 , y = 300)
+    dtext.place(anchor = tk.CENTER , x = 150 , y = 250)
+
     fFrame.place(anchor = tk.NW , x = 210 , y = 140)
 
 loop()
