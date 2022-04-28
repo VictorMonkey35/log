@@ -121,9 +121,10 @@ def datedown():
         date -= 1
         dtext.config(text = months[date-1])
     
+def Search():
+    pass
 
-
-canvas = tk.Canvas(c , bg = 'lightgrey' , width = 960 ,  height = 600 , bd = 0)
+canvas = tk.Canvas(c , bg = 'black' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
 
 usernametitle = tk.Label(c , text = 'Username' , bd = 0 , bg = 'white')
@@ -147,56 +148,79 @@ lname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 
 #deklarerar elementen för "top info rutan"
-mFrame = tk.Frame(c , bg = 'orange' , bd = 0 , height = 60 , width = 964)
-
-
-#deklarerar elementen för "location rutan"
-LocationVarF1 = tk.IntVar()
-LocationVarF2 = tk.IntVar()
-LocationVarF3 = tk.IntVar()
-LocationVarF4 = tk.IntVar()
-LocationVarF5 = tk.IntVar()
-LocationVarF6 = tk.IntVar()
-
-LocationVarT1 = tk.IntVar()
-LocationVarT2 = tk.IntVar()
-LocationVarT3 = tk.IntVar()
-LocationVarT4 = tk.IntVar()
-LocationVarT5 = tk.IntVar()
-LocationVarT6 = tk.IntVar()
-
-lFrame = tk.Frame(c , bg = 'green' , bd = 0 , height = 540 , width = 210)
-toText = tk.Label(lFrame , bg = 'white' , bd = 0 , text = 'From')
-fromText = tk.Label(lFrame , bg = 'white' , bd = 0 , text = 'From')
-
-flb1 = tk.Checkbutton(lFrame, text = "Stockholm", variable = LocationVarF1, onvalue = 1, offvalue = 0)
-flb2 = tk.Checkbutton(lFrame, text = "Madrid", variable = LocationVarF2, onvalue = 1, offvalue = 0)
-flb3 = tk.Checkbutton(lFrame, text = "Paris", variable = LocationVarF3, onvalue = 1, offvalue = 0)
-flb4 = tk.Checkbutton(lFrame, text = "Dubai", variable = LocationVarF4, onvalue = 1, offvalue = 0)
-flb5 = tk.Checkbutton(lFrame, text = "New York", variable = LocationVarF5, onvalue = 1, offvalue = 0)
-flb6 = tk.Checkbutton(lFrame, text = "Tokyo", variable = LocationVarF6, onvalue = 1, offvalue = 0)
-
-tlb1 = tk.Checkbutton(lFrame, variable = LocationVarT1, onvalue = 1, offvalue = 0)
-tlb2 = tk.Checkbutton(lFrame, variable = LocationVarT2, onvalue = 1, offvalue = 0)
-tlb3 = tk.Checkbutton(lFrame, variable = LocationVarT3, onvalue = 1, offvalue = 0)
-tlb4 = tk.Checkbutton(lFrame, variable = LocationVarT4, onvalue = 1, offvalue = 0)
-tlb5 = tk.Checkbutton(lFrame, variable = LocationVarT5, onvalue = 1, offvalue = 0)
-tlb6 = tk.Checkbutton(lFrame, variable = LocationVarT6, onvalue = 1, offvalue = 0)
+mFrame = tk.Frame(c , bg = 'orange' , bd = 0 , height = 59 , width = 964)
 
 
 #deklarerar elementen för "biljettklass rutan"
-cFrame = tk.Frame(c , bg = 'blue' , bd = 0 , height = 80 , width = 460)
+cFrame = tk.Frame(c , bg = 'white' , bd = 0 , height = 80 , width = 669)
+
+searchB = tk.Button(cFrame , bg = 'light grey' , bd = 1 , text = 'Search' , command = Search)
+
+economy = tk.IntVar()
+plus = tk.IntVar()
+bussines = tk.IntVar()
+
+economyB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Economy')
+plusB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Plus')
+bussinesB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Bussines')
 
 
-#deklarerar elementen för "datum rutan"
-dFrame = tk.Frame(c , bg = 'red' , bd = 0 , height = 540 , width = 300)
-bdbutton = tk.Button(dFrame , text = '<-' , command = datedown , bd = 0 , bg = 'white')
-fdbutton = tk.Button(dFrame , text = '->' , command = dateup , bd = 0 , bg = 'white')
-dtext = tk.Label(dFrame , text = months[date-1])
+#separation frames för estetiska skäl
+sFrame1 = tk.Frame(c , bg = 'grey' , bd = 0 , height = 540 , width = 1)
+sFrame2 = tk.Frame(c , bg = 'grey' , bd = 0 , height = 1 , width = 964)
 
 
-#deklarerar elementen för "sökresultat rutan"
-fFrame = tk.Frame(c , bg = 'pink' , bd = 0 , height = 460 , width = 460)
+#deklarerar variabler för location checkboxes
+FromStockholm = tk.IntVar()
+FromMadrid = tk.IntVar()
+FromParis = tk.IntVar()
+FromDubai = tk.IntVar()
+FromNewYork = tk.IntVar()
+FromTokyo = tk.IntVar()
+
+ToStockholm = tk.IntVar()
+ToMadrid = tk.IntVar()
+ToParis = tk.IntVar()
+ToDubai = tk.IntVar()
+ToNewYork = tk.IntVar()
+ToTokyo = tk.IntVar()
+
+
+#deklarerar elementen för "filter rutan"
+fFrame = tk.Frame(c , bg = 'white' , bd = 0 , height = 540 , width = 300)
+
+bdbutton = tk.Button(fFrame , text = '<-' , command = datedown , bd = 0 , bg = 'white')
+fdbutton = tk.Button(fFrame , text = '->' , command = dateup , bd = 0 , bg = 'white')
+dtext = tk.Label(fFrame , text = months[date-1] , bg = 'white')
+
+toText = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'To')
+fromText = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'From')
+
+StockholmT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'Stockholm')
+MadridT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'Madrid')
+ParisT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'Paris')
+DubaiT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'Dubai')
+NewYorkT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'New York')
+TokyoT = tk.Label(fFrame , bg = 'white' , bd = 0 , text = 'Tokyo')
+
+flb1 = tk.Checkbutton(fFrame , variable = FromStockholm , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+flb2 = tk.Checkbutton(fFrame , variable = FromMadrid    , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+flb3 = tk.Checkbutton(fFrame , variable = FromParis     , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+flb4 = tk.Checkbutton(fFrame , variable = FromDubai     , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+flb5 = tk.Checkbutton(fFrame , variable = FromNewYork   , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+flb6 = tk.Checkbutton(fFrame , variable = FromTokyo     , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+
+tlb1 = tk.Checkbutton(fFrame , variable = ToStockholm   , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+tlb2 = tk.Checkbutton(fFrame , variable = ToMadrid      , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+tlb3 = tk.Checkbutton(fFrame , variable = ToParis       , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+tlb4 = tk.Checkbutton(fFrame , variable = ToDubai       , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+tlb5 = tk.Checkbutton(fFrame , variable = ToNewYork     , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+tlb6 = tk.Checkbutton(fFrame , variable = ToTokyo       , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0)
+
+
+#deklarerar elementen för "resultat rutan"
+rFrame = tk.Frame(c , bg = 'lightgrey' , bd = 0 , height = 460 , width = 669)
+Scroll = tk.Scrollbar(rFrame)
 
 
 #placerar ut alementen för loggin sidan
@@ -246,31 +270,45 @@ def loop():
 #bygger upp hemsidan.
 def start():
     mFrame.place(anchor = tk.NW , x = 0 , y = 0)
+    
+    cFrame.place(anchor = tk.NW , x = 0 , y = 60)
+    economyB.place(anchor = tk.CENTER , x = 120 , y = 40)
+    plusB.place(anchor = tk.CENTER , x = 260 , y = 40)
+    bussinesB.place(anchor = tk.CENTER , x = 400 , y = 40)
+    searchB.place(anchor = tk.CENTER , x = 600 , y = 40)
 
-    lFrame.place(anchor = tk.NW , x = 0 , y = 60)
-    toText.place(anchor = tk.CENTER , x = 20 , y = 20)
-    fromText.place(anchor = tk.CENTER , x = 60 , y = 20)
-    flb1.place(anchor = tk.NW , x = 80 , y = 40)
-    flb2.place(anchor = tk.NW , x = 80 , y = 60)
-    flb3.place(anchor = tk.NW , x = 80 , y = 80)
-    flb4.place(anchor = tk.NW , x = 80 , y = 100)
-    flb5.place(anchor = tk.NW , x = 80 , y = 120)
-    flb6.place(anchor = tk.NW , x = 80 , y = 140)
-    tlb1.place(anchor = tk.NW , x = 160 , y = 40)
-    tlb2.place(anchor = tk.NW , x = 160 , y = 60)
-    tlb3.place(anchor = tk.NW , x = 160 , y = 80)
-    tlb4.place(anchor = tk.NW , x = 160 , y = 100)
-    tlb5.place(anchor = tk.NW , x = 160 , y = 120)
-    tlb6.place(anchor = tk.NW , x = 160 , y = 140)
+    fFrame.place(anchor = tk.NW , x = 670 , y = 60)
+    bdbutton.place(anchor = tk.CENTER , x = 100 , y = 400)
+    fdbutton.place(anchor = tk.CENTER , x = 200 , y = 400)
+    dtext.place(anchor = tk.CENTER , x = 150 , y = 400)
+    toText.place(anchor = tk.CENTER , x = 195 , y = 70)
+    fromText.place(anchor = tk.CENTER , x = 110 , y = 70)
+    StockholmT.place(anchor = tk.CENTER , x = 150 , y = 120)
+    MadridT.place(anchor = tk.CENTER , x = 150 , y = 160)
+    ParisT.place(anchor = tk.CENTER , x = 150 , y = 200)
+    DubaiT.place(anchor = tk.CENTER , x = 150 , y = 240)
+    NewYorkT.place(anchor = tk.CENTER , x = 150 , y = 280)
+    TokyoT.place(anchor = tk.CENTER , x = 150 , y = 320)
+    flb1.place(anchor = tk.CENTER , x = 110 , y = 120)
+    flb2.place(anchor = tk.CENTER , x = 110 , y = 160)
+    flb3.place(anchor = tk.CENTER , x = 110 , y = 200)
+    flb4.place(anchor = tk.CENTER , x = 110 , y = 240)
+    flb5.place(anchor = tk.CENTER , x = 110 , y = 280)
+    flb6.place(anchor = tk.CENTER , x = 110 , y = 320)
+    tlb1.place(anchor = tk.CENTER , x = 195 , y = 120)
+    tlb2.place(anchor = tk.CENTER , x = 195 , y = 160)
+    tlb3.place(anchor = tk.CENTER , x = 195 , y = 200)
+    tlb4.place(anchor = tk.CENTER , x = 195 , y = 240)
+    tlb5.place(anchor = tk.CENTER , x = 195 , y = 280)
+    tlb6.place(anchor = tk.CENTER , x = 195 , y = 320)
 
-    cFrame.place(anchor = tk.NW , x = 210 , y = 60)
+    sFrame1.place(anchor = tk.NW , x = 669 , y = 60)
+    sFrame2.place(anchor = tk.NW , x = 0 , y = 59)
 
-    dFrame.place(anchor = tk.NW , x = 670 , y = 60)
-    bdbutton.place(anchor = tk.CENTER , x = 100 , y = 300)
-    fdbutton.place(anchor = tk.CENTER , x = 200 , y = 300)
-    dtext.place(anchor = tk.CENTER , x = 150 , y = 250)
+    rFrame.place(anchor = tk.NW , x = 0 , y = 140)
+    #Scroll.pack(side = tk.RIGHT , fill = tk.Y)
 
-    fFrame.place(anchor = tk.NW , x = 210 , y = 140)
+    Search()
 
 
 #startar loopen
