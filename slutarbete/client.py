@@ -1,24 +1,3 @@
-#Adala Airlines
-
-#registrera/logga in
-#logga in som admin för att lägga till flights
-
-#städer som klasser
-#stockholm
-#madrid
-#paris
-#new york
-#rio de janeiro
-#tokyo
-#dubai
-#kairo
-
-#flygresor som klasser, olika säten som sub klasser
-
-#passagerare som klasser, med namn och ålder
-
-#economy class, adala plus, bussines class
-
 import mysql.connector
 import tkinter as tk
 import time as t
@@ -39,14 +18,20 @@ months = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','Sep
 c = tk.Tk()
 
 adalaLogo1 = tk.PhotoImage(file = 'slutarbete/bilder/adalaLogo1.png')
+adalaLogo2 = tk.PhotoImage(file = 'slutarbete/bilder/adalaLogo2.png')
 madrid = tk.PhotoImage(file = 'slutarbete/bilder/madrid.png')
 newyork = tk.PhotoImage(file = 'slutarbete/bilder/newyork.png')
 rio = tk.PhotoImage(file = 'slutarbete/bilder/rio.png')
 whitebox = tk.PhotoImage(file = 'slutarbete/bilder/whitebox.png')
+profileimg = tk.PhotoImage(file = 'slutarbete/bilder/profileimg.png')
+searchimg = tk.PhotoImage(file = 'slutarbete/bilder/searchimg.png')
 
 rio = rio.zoom(1,7)
 rio = rio.subsample(1,6)
 whitebox = whitebox.subsample(6,5)
+adalaLogo2 = adalaLogo2.subsample(5,5)
+profileimg = profileimg.subsample(7,7)
+searchimg = searchimg.subsample(8,8)
 
 def register():
     usernametitle.place_forget()
@@ -138,7 +123,7 @@ cAccountb = tk.Button(c , text = 'Create account' , bd = 0 , command = loginscre
 backb = tk.Button(c , text = '<-' , bd = 0 , command = loginscreen , bg = 'white')
 
 registertxt = tk.Label(c , text = 'Dont have an account?' , bd = 0 , bg = 'white')
-registerb = tk.Button(c , text = 'Register!' , bd = 0 , bg = 'white' , command = register , fg = 'blue')
+registerb = tk.Button(c , text = 'Register!' , bd = 0 , bg = 'white' , command = register , fg = 'blue' , activebackground = 'white')
 
 fnametitle = tk.Label(c , text = 'First name' , bd = 0 , bg = 'white')
 fname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
@@ -149,12 +134,14 @@ lname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 #deklarerar elementen för "top info rutan"
 mFrame = tk.Frame(c , bg = 'orange' , bd = 0 , height = 59 , width = 964)
+mButton = tk.Button(mFrame , image = adalaLogo2 , bd = 0 , bg = 'orange' , activebackground = 'orange')
+pButton = tk.Button(mFrame , image = profileimg , bg = 'orange' , bd = 0 , activebackground = 'orange')
 
 
 #deklarerar elementen för "biljettklass rutan"
 cFrame = tk.Frame(c , bg = 'white' , bd = 0 , height = 80 , width = 669)
 
-searchB = tk.Button(cFrame , bg = 'light grey' , bd = 1 , text = 'Search' , command = Search)
+searchB = tk.Button(cFrame , bg = 'white' , activebackground = 'white' , bd = 0 , image = searchimg , command = Search)
 
 economy = tk.IntVar()
 plus = tk.IntVar()
@@ -252,9 +239,6 @@ def draw():
 
         canvas.create_image(480 , 270 , anchor = tk.CENTER , image = whitebox)
         canvas.create_image(480 , 155 , anchor = tk.CENTER , image = adalaLogo1)
-    
-    if booking == True:
-        pass
  
 
  #ser till att programmet uppdateras var 17:e millisekund.
@@ -270,12 +254,14 @@ def loop():
 #bygger upp hemsidan.
 def start():
     mFrame.place(anchor = tk.NW , x = 0 , y = 0)
+    mButton.place(anchor = tk.CENTER , x = 100 , y = 30)
+    pButton.place(anchor = tk.CENTER , x = 930 , y = 37)
     
     cFrame.place(anchor = tk.NW , x = 0 , y = 60)
     economyB.place(anchor = tk.CENTER , x = 120 , y = 40)
     plusB.place(anchor = tk.CENTER , x = 260 , y = 40)
     bussinesB.place(anchor = tk.CENTER , x = 400 , y = 40)
-    searchB.place(anchor = tk.CENTER , x = 600 , y = 40)
+    searchB.place(anchor = tk.CENTER , x = 600 , y = 45)
 
     fFrame.place(anchor = tk.NW , x = 670 , y = 60)
     bdbutton.place(anchor = tk.CENTER , x = 100 , y = 400)
