@@ -1,12 +1,22 @@
 import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="",
+  database="victorsdatabas"
+)
+
+mycursor = mydb.cursor()
+
+print("Uppkopplad till databasen!")
+
+
 import tkinter as tk
 import time as t
 import _thread as th
 import socket as so
 
-#dataBase = mysql.connector.connect(host = 'loclahost' , user = 'root' , password = '' , database = 'victorsdatabas')
-
-#mycursor = dataBase.cursor()
 
 tickval = 0
 menu = True
@@ -55,6 +65,7 @@ def register():
 
 def login():
     global menu, booking
+
     usernametitle.place_forget()
     username.place_forget()
     passwordtitle.place_forget()
@@ -65,6 +76,20 @@ def login():
     menu = False
     booking = True
     start()
+
+def createAccount():
+    if username.get() != '' and fname.get() != '' and lname.get() != '' and password.get() != '':
+        sql = 'INSERT INTO `users` (`UserName`, `Firstname`, `Surname`, `Password`) VALUES (%s, %s, %s, %s)'
+        val = (username.get(), fname.get(), lname.get(), password.get())
+        mycursor.execute(sql, val)
+        mydb.commit()
+        print(mycursor.rowcount, "record inserted.")
+        # Läsa från databasen
+        mycursor.execute("SELECT * FROM users")
+        myresult = mycursor.fetchall()
+        loginscreen()
+        for x in myresult:
+            print(x)
 
 def loginscreen():
     usernametitle.place_forget()
@@ -119,7 +144,7 @@ passwordtitle = tk.Label(c , text = 'Password' , bg = 'white' , bd = 0)
 password = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 loginb = tk.Button(c , text = 'Log in' , bd = 0 , command = login)
-cAccountb = tk.Button(c , text = 'Create account' , bd = 0 , command = loginscreen)
+cAccountb = tk.Button(c , text = 'Create account' , bd = 0 , command = createAccount)
 backb = tk.Button(c , text = '<-' , bd = 0 , command = loginscreen , bg = 'white')
 
 registertxt = tk.Label(c , text = 'Dont have an account?' , bd = 0 , bg = 'white')
