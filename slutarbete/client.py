@@ -16,7 +16,17 @@ import tkinter as tk
 import time as t
 import _thread as th
 import socket as so
+from socket import *
 
+def connect_to_server():
+    global name
+    s = socket()
+    host = input("Ange serverns IP-adress:")
+    name = input("Ange namn: ")
+    port = 12345
+    s.connect((host, port))
+    return s
+conn = connect_to_server()
 
 tickval = 0
 menu = True
@@ -79,7 +89,18 @@ def login():
 
 def createAccount():
     if username.get() != '' and fname.get() != '' and lname.get() != '' and password.get() != '':
-        sql = 'INSERT INTO `users` (`UserName`, `Firstname`, `Surname`, `Password`) VALUES (%s, %s, %s, %s)'
+        accountlist = []
+        accountlist.append(username.get())
+        accountlist.append(fname.get())
+        accountlist.append(lname.get())
+        accountlist.append(password.get())
+        print(accountlist)
+
+        msg = accountlist
+        b = msg.encode("utf-16")
+        conn.send(b)
+
+        """sql = 'INSERT INTO `users` (`UserName`, `Firstname`, `Surname`, `Password`) VALUES (%s, %s, %s, %s)'
         val = (username.get(), fname.get(), lname.get(), password.get())
         mycursor.execute(sql, val)
         mydb.commit()
@@ -89,7 +110,7 @@ def createAccount():
         myresult = mycursor.fetchall()
         loginscreen()
         for x in myresult:
-            print(x)
+            print(x)"""
 
 def loginscreen():
     usernametitle.place_forget()
@@ -141,7 +162,7 @@ usernametitle = tk.Label(c , text = 'Username' , bd = 0 , bg = 'white')
 username = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 passwordtitle = tk.Label(c , text = 'Password' , bg = 'white' , bd = 0)
-password = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
+password = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey', show = '*')
 
 loginb = tk.Button(c , text = 'Log in' , bd = 0 , command = login)
 cAccountb = tk.Button(c , text = 'Create account' , bd = 0 , command = createAccount)
