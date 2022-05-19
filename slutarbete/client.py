@@ -21,8 +21,7 @@ from socket import *
 def connect_to_server():
     global name
     s = socket()
-    host = input("Ange serverns IP-adress:")
-    name = input("Ange namn: ")
+    host = 'localhost'
     port = 12345
     s.connect((host, port))
     return s
@@ -89,28 +88,16 @@ def login():
 
 def createAccount():
     if username.get() != '' and fname.get() != '' and lname.get() != '' and password.get() != '':
-        accountlist = []
-        accountlist.append(username.get())
-        accountlist.append(fname.get())
-        accountlist.append(lname.get())
-        accountlist.append(password.get())
-        print(accountlist)
-
-        msg = accountlist
-        b = msg.encode("utf-16")
-        conn.send(b)
-
-        """sql = 'INSERT INTO `users` (`UserName`, `Firstname`, `Surname`, `Password`) VALUES (%s, %s, %s, %s)'
-        val = (username.get(), fname.get(), lname.get(), password.get())
-        mycursor.execute(sql, val)
-        mydb.commit()
-        print(mycursor.rowcount, "record inserted.")
-        # Läsa från databasen
-        mycursor.execute("SELECT * FROM users")
-        myresult = mycursor.fetchall()
-        loginscreen()
-        for x in myresult:
-            print(x)"""
+        
+        msg = username.get() + ' ' + fname.get() + ' ' + lname.get() + ' ' + password.get()
+        msg = str(msg)
+        makesure = msg.split()
+        if len(makesure) == 4:
+            b = msg.encode("utf-16")
+            conn.send(b)
+            b = conn.recv(1024)
+            if b == 'AccountCreated':
+                loginscreen()
 
 def loginscreen():
     usernametitle.place_forget()
@@ -153,8 +140,16 @@ def datedown():
         dtext.config(text = months[date-1])
     
 def Search():
-    pass
-
+    class Resa:
+        def __init__(self, fromcity, tocity, time, month, date, klass, price):
+            self.fromcity = fromcity
+            self.tocity = tocity
+            self.time = time
+            self.month = month
+            self.date = date
+            self.klass = klass
+            self.price = price
+            
 canvas = tk.Canvas(c , bg = 'black' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
 
