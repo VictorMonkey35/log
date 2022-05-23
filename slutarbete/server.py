@@ -44,8 +44,6 @@ def threaded_client(conn):
         msg = 'AccountCreated'
         for i in connections:
             i.send(msg.encode('utf-16'))
-
-        threaded_client(conn)
     
     if len(makesure) == 2:
         query = ("SELECT ID FROM users WHERE UserName = %s and Password = %s")
@@ -55,6 +53,8 @@ def threaded_client(conn):
             msg = 'LoggedIn'
             for i in connections:
                 i.send(msg.encode('utf-16'))
+
+    threaded_client(conn)
 
 from _thread import *
 s = start_server()

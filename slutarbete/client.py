@@ -1,17 +1,3 @@
-import mysql.connector
-
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="",
-  database="victorsdatabas"
-)
-
-mycursor = mydb.cursor()
-
-print("Uppkopplad till databasen!")
-
-
 import tkinter as tk
 import time as t
 import _thread as th
@@ -19,7 +5,6 @@ import socket as so
 from socket import *
 
 def connect_to_server():
-    global name
     s = socket()
     host = 'localhost'
     port = 12345
@@ -150,6 +135,7 @@ def datedown():
         date -= 1
         dtext.config(text = months[date-1])
     
+
 def Search():
     class Resa:
         def __init__(self, fromcity, tocity, time, month, date, klass, price):
@@ -160,6 +146,38 @@ def Search():
             self.date = date
             self.klass = klass
             self.price = price
+
+            def Generate(self):
+                pass
+
+    resorList = []
+
+    for i in range(1,2):
+        fromlist = []
+        fromlist.append(FromStockholm.get())
+        fromlist.append(FromMadrid.get())
+        fromlist.append(FromParis.get())
+        fromlist.append(FromDubai.get())
+        fromlist.append(FromNewYork.get())
+        fromlist.append(FromTokyo.get())
+
+        tolist = []
+        tolist.append(ToStockholm.get())
+        tolist.append(ToMadrid.get())
+        tolist.append(ToParis.get())
+        tolist.append(ToDubai.get())
+        tolist.append(ToNewYork.get())
+        tolist.append(ToTokyo.get())
+
+        classlist = []
+        classlist.append(economy.get())
+        classlist.append(plus.get())
+        classlist.append(bussines.get())
+
+        date-1
+
+    for obj in resorList:
+        obj.Generate()
             
 canvas = tk.Canvas(c , bg = 'black' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
@@ -199,9 +217,9 @@ economy = tk.IntVar()
 plus = tk.IntVar()
 bussines = tk.IntVar()
 
-economyB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Economy')
-plusB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Plus')
-bussinesB = tk.Checkbutton(cFrame , bg = 'white' , bd = 0 , text = 'Bussines')
+economyB = tk.Checkbutton(cFrame , variable = economy , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0 , text = 'Economy')
+plusB = tk.Checkbutton(cFrame , variable = plus , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0 , text = 'Plus')
+bussinesB = tk.Checkbutton(cFrame , variable = bussines , onvalue = 1 , offvalue = 0 , bg = 'white' , bd = 0 , text = 'Bussines')
 
 
 #separation frames för estetiska skäl
