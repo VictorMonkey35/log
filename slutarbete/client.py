@@ -75,16 +75,26 @@ def register():
 def login():
     global menu, booking
 
-    usernametitle.place_forget()
-    username.place_forget()
-    passwordtitle.place_forget()
-    password.place_forget()
-    loginb.place_forget()
-    registertxt.place_forget()
-    registerb.place_forget()
-    menu = False
-    booking = True
-    start()
+    if username.get() != '' and password.get() != '':
+        msg = username.get() + ' ' + password.get()
+        msg = str(msg)
+        makesure = msg.split()
+        if len(makesure) == 2:
+            b = msg.encode('utf-16')
+            conn.send(b)
+            b = conn.recv(1024)
+            msg = b.decode('utf-16')
+            if msg == 'LoggedIn':
+                usernametitle.place_forget()
+                username.place_forget()
+                passwordtitle.place_forget()
+                password.place_forget()
+                loginb.place_forget()
+                registertxt.place_forget()
+                registerb.place_forget()
+                menu = False
+                booking = True
+                start()
 
 def createAccount():
     if username.get() != '' and fname.get() != '' and lname.get() != '' and password.get() != '':
@@ -96,7 +106,8 @@ def createAccount():
             b = msg.encode("utf-16")
             conn.send(b)
             b = conn.recv(1024)
-            if b == 'AccountCreated':
+            msg = b.decode('utf-16')
+            if msg == 'AccountCreated':
                 loginscreen()
 
 def loginscreen():
