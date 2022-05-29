@@ -1,7 +1,5 @@
 import tkinter as tk
-import time as t
-import _thread as th
-import socket as so
+import random as r
 from socket import *
 
 def connect_to_server():
@@ -10,6 +8,7 @@ def connect_to_server():
     port = 12345
     s.connect((host, port))
     return s
+
 conn = connect_to_server()
 
 tickval = 0
@@ -58,7 +57,7 @@ def register():
     backb.place(anchor = tk.CENTER , x = 330 , y = 85)
 
 def login():
-    global menu, booking
+    global menu, booking , myID
 
     if username.get() != '' and password.get() != '':
         msg = username.get() + ' ' + password.get()
@@ -69,7 +68,10 @@ def login():
             conn.send(b)
             b = conn.recv(1024)
             msg = b.decode('utf-16')
-            if msg == 'LoggedIn':
+            if msg == 'NotLoggedIn':
+                pass
+            else:
+                myID = msg
                 usernametitle.place_forget()
                 username.place_forget()
                 passwordtitle.place_forget()
@@ -134,25 +136,66 @@ def datedown():
     else:
         date -= 1
         dtext.config(text = months[date-1])
+
+#gör en klass för resor med de flesta nödvändiga attribut.
+class Resa:
+    def __init__(self, fromcity, tocity, time, month, date, klass, price):
+        self.fromcity = fromcity
+        self.tocity = tocity
+        self.time = time
+        self.month = month
+        self.date = date
+        self.klass = klass
+        self.price = price
+
+    def Generate(self , fromcity , tocity , time , month , date , klass , price):
+
+        ticket = tk.Frame(rFrame , bg = 'white' , height = 200 , width = 640)
+        ticket.pack(pady = 8 , padx = 6)
+
+        destination = tk.Label(ticket , text = (fromcity + ' - ' + tocity) , bg = 'white')
+        destination.config(font=('Helvatical bold',25))
+        destination.place(x = 10 , y = 10 , anchor = tk.NW)
+
+        departure = tk.Label(ticket , bg = 'white' , text = date + ':e ' + month + ' kl ' + time , fg = 'grey')
+        departure.config(font=('Helvatical bold',20))
+        departure.place(x = 630 , y = 12 , anchor = tk.NE)
+
+        pricetext = tk.Label(ticket , bg = 'white' , text = price)
+        pricetext.config(font=('Helvatical bold',22))
+        pricetext.place(x = 10 , y = 165 , anchor = tk.SW)
+
+        classtext = tk.Label(ticket , bg = 'white' , text = klass , fg = 'grey')
+        classtext.config(font=('Helvatical bold',18))
+        classtext.place(x = 10 , y = 165 , anchor = tk.NW)
+
+        #speciell import för att kunna använda argument när en funktion hänvisas via tkinter knapp
+        from functools import partial
+        bookFunc = partial(Resa.book, self)
+
+        #knapp för att boka resan
+        bookB = tk.Button(ticket , bd = 2 , text = 'Boka!' , command = bookFunc , height = 2 , width = 8)
+        bookB.config(font=('Helvatical bold',22))
+        bookB.place(x = 610 , y = 160 , anchor = tk.SE)
     
+    def book(self):
+        msg = str(myID + ' ' + self.fromcity + ' ' + self.tocity + ' ' + self.time + ' ' + self.month + ' ' + self.date + ' ' + self.klass + ' ' + self.price)
+        b = msg.encode('utf-16')
+        conn.send(b)
+
 
 def Search():
-    class Resa:
-        def __init__(self, fromcity, tocity, time, month, date, klass, price):
-            self.fromcity = fromcity
-            self.tocity = tocity
-            self.time = time
-            self.month = month
-            self.date = date
-            self.klass = klass
-            self.price = price
-
-            def Generate(self):
-                pass
+    #tar bort alla element i resultat framen, så att tickets inte stackas på varandra
+    for widgets in rFrame.winfo_children():
+        if widgets == Scroll:
+            pass
+        else:
+            widgets.destroy()
 
     resorList = []
 
-    for i in range(1,2):
+    #Hämtar information från alla filter
+    for i in range(1,12):
         fromlist = []
         fromlist.append(FromStockholm.get())
         fromlist.append(FromMadrid.get())
@@ -174,11 +217,77 @@ def Search():
         classlist.append(plus.get())
         classlist.append(bussines.get())
 
-        date-1
+        #fördeklaration av nödvändiga listor
+        cities = ['Stockholm' , 'Madrid' , 'Paris' , 'Dubai' , 'NewYork' , 'Tokyo']
+        classes = ['EconomyClass' , 'Plus' , 'BussinesClass']
+        frominput = []
+        toinput = []
+        classinput = []
 
-    for obj in resorList:
-        obj.Generate()
+        #skriver om filterlistornas information från binär information till tillgänglig text.
+        for i in range(0,5):
+            if fromlist[i] == 0:
+                pass
+            else:
+                frominput.append(cities[i])
             
+            if tolist[i] == 0:
+                pass
+            else:
+                toinput.append(cities[i])
+
+        for i in range(0,2):
+            if classlist[i] == 0:
+                pass
+            else:
+                classinput.append(classes[i])
+        
+        #Visar allt om filter ej är aktiverade(används inte)
+        if len(frominput) == 0:
+            frominput = ['Stockholm' , 'Madrid' , 'Paris' , 'Dubai' , 'NewYork' , 'Tokyo']
+        if len(toinput) == 0:
+            toinput = ['Stockholm' , 'Madrid' , 'Paris' , 'Dubai' , 'NewYork' , 'Tokyo']
+        if len(classinput) == 0:
+            classinput = ['EconomyClass' , 'Plus' , 'BussinesClass']
+
+        #deklarerar element för objekt generation
+        fromcityi = str(frominput[r.randint(0,(len(frominput))-1)])
+        tocityi = str(toinput[r.randint(0,(len(toinput))-1)])     
+        timei = str(r.randint(10,23)) + ':' + str(r.randint(10,59))
+        monthi = str(months[date-1])
+        datei = str(r.randint(3,28))
+        klassi = str(classinput[r.randint(0,(len(classinput)-1))])
+        if klassi == 'Economy class':
+            pricei = str(r.randint(900,1500)) + 'kr'
+        elif klassi == 'Plus':
+            pricei = str(r.randint(1600,2200)) + 'kr'
+        else:
+            pricei = str(r.randint(2400,4000)) + 'kr'
+        
+        #genererar objektet
+        if fromcityi == tocityi:
+            pass
+        else:
+            resorList.append(Resa(fromcityi , tocityi , timei , monthi , datei , klassi , pricei))
+
+    #kallar till biljett genereringen
+    for obj in resorList:
+        obj.Generate(obj.fromcity , obj.tocity , obj.time , obj.month , obj.date , obj.klass , obj.price)
+
+
+#beskrivning
+def shop():
+    pass
+
+
+def profile():
+    if myID == 10:
+        pass
+    else:
+        pass
+
+
+#deklarerar elementen för login screenen    
 canvas = tk.Canvas(c , bg = 'black' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
 
@@ -204,8 +313,8 @@ lname = tk.Entry(c , width = 30 , bd = 0 , bg = 'lightgrey')
 
 #deklarerar elementen för "top info rutan"
 mFrame = tk.Frame(c , bg = 'orange' , bd = 0 , height = 59 , width = 964)
-mButton = tk.Button(mFrame , image = adalaLogo2 , bd = 0 , bg = 'orange' , activebackground = 'orange')
-pButton = tk.Button(mFrame , image = profileimg , bg = 'orange' , bd = 0 , activebackground = 'orange')
+mButton = tk.Button(mFrame , image = adalaLogo2 , bd = 0 , bg = 'orange' , activebackground = 'orange' , command = shop)
+pButton = tk.Button(mFrame , image = profileimg , bg = 'orange' , bd = 0 , activebackground = 'orange' , command = profile)
 
 
 #deklarerar elementen för "biljettklass rutan"
@@ -244,7 +353,7 @@ ToTokyo = tk.IntVar()
 
 
 #deklarerar elementen för "filter rutan"
-fFrame = tk.Frame(c , bg = 'white' , bd = 0 , height = 540 , width = 300)
+fFrame = tk.Frame(c , bg = 'white' , bd = 0 , height = 545 , width = 300)
 
 bdbutton = tk.Button(fFrame , text = '<-' , command = datedown , bd = 0 , bg = 'white')
 fdbutton = tk.Button(fFrame , text = '->' , command = dateup , bd = 0 , bg = 'white')
@@ -276,8 +385,12 @@ tlb6 = tk.Checkbutton(fFrame , variable = ToTokyo       , onvalue = 1 , offvalue
 
 
 #deklarerar elementen för "resultat rutan"
-rFrame = tk.Frame(c , bg = 'lightgrey' , bd = 0 , height = 460 , width = 669)
-Scroll = tk.Scrollbar(rFrame)
+ScrollFrame = tk.Canvas(bg = 'lightgrey' , bd = 0 , height = 460 , width = 665)
+rFrame = tk.Canvas(bg = 'lightgrey' , bd = 0 , height = 460 , width = 660)
+ScrollFrame.pack_propagate(0)
+Scroll = tk.Scrollbar(ScrollFrame , orient = 'vertical')
+rFrame.config(yscrollcommand=Scroll.set)
+Scroll.config(command=rFrame.yview)
 
 
 #placerar ut alementen för loggin sidan
@@ -299,7 +412,7 @@ def tick():
         tickval += 1
 
 
-#innehåller allt som ska ske i loopen, alltså ritas var 17:e sekund.
+#innehåller allt som ska ske i loopen, alltså ritas var 17:e sekund. funktionen är endast aktiv under inloggnings skärmen.
 def draw():
     if menu == True:
         canvas.create_image(480 - tickval , 310 , anchor = tk.CENTER , image = madrid)
@@ -362,7 +475,8 @@ def start():
     sFrame2.place(anchor = tk.NW , x = 0 , y = 59)
 
     rFrame.place(anchor = tk.NW , x = 0 , y = 140)
-    #Scroll.pack(side = tk.RIGHT , fill = tk.Y)
+    ScrollFrame.place(anchor = tk.NW , x = 0 , y = 140)
+    Scroll.pack(side = tk.RIGHT , fill = tk.Y)
 
     Search()
 
