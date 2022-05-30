@@ -2,6 +2,8 @@ import tkinter as tk
 import random as r
 from socket import *
 
+
+#ansluter till servern
 def connect_to_server():
     s = socket()
     host = 'localhost'
@@ -11,10 +13,11 @@ def connect_to_server():
 
 conn = connect_to_server()
 
+#deklarerar nödvändig info som variabler och bilder
 tickval = 0
 menu = True
 booking = False
-date = 4
+date = 5
 
 months = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December']
 
@@ -150,52 +153,49 @@ class Resa:
 
     def Generate(self , fromcity , tocity , time , month , date , klass , price):
 
-        ticket = tk.Frame(rFrame , bg = 'white' , height = 200 , width = 640)
+        ticket = tk.Frame(rFrame , bg = 'white' , height = 100 , width = 640)
         ticket.pack(pady = 8 , padx = 6)
 
         destination = tk.Label(ticket , text = (fromcity + ' - ' + tocity) , bg = 'white')
-        destination.config(font=('Helvatical bold',25))
+        destination.config(font=('Helvatical bold',19))
         destination.place(x = 10 , y = 10 , anchor = tk.NW)
 
         departure = tk.Label(ticket , bg = 'white' , text = date + ':e ' + month + ' kl ' + time , fg = 'grey')
-        departure.config(font=('Helvatical bold',20))
-        departure.place(x = 630 , y = 12 , anchor = tk.NE)
+        departure.config(font=('Helvatical bold',16))
+        departure.place(x = 500 , y = 12 , anchor = tk.NE)
 
         pricetext = tk.Label(ticket , bg = 'white' , text = price)
-        pricetext.config(font=('Helvatical bold',22))
-        pricetext.place(x = 10 , y = 165 , anchor = tk.SW)
+        pricetext.config(font=('Helvatical bold',15))
+        pricetext.place(x = 10 , y = 80 , anchor = tk.SW)
 
         classtext = tk.Label(ticket , bg = 'white' , text = klass , fg = 'grey')
-        classtext.config(font=('Helvatical bold',18))
-        classtext.place(x = 10 , y = 165 , anchor = tk.NW)
+        classtext.config(font=('Helvatical bold',13))
+        classtext.place(x = 10 , y = 75 , anchor = tk.NW)
 
         #speciell import för att kunna använda argument när en funktion hänvisas via tkinter knapp
         from functools import partial
         bookFunc = partial(Resa.book, self)
-
+        
         #knapp för att boka resan
         bookB = tk.Button(ticket , bd = 2 , text = 'Boka!' , command = bookFunc , height = 2 , width = 8)
-        bookB.config(font=('Helvatical bold',22))
-        bookB.place(x = 610 , y = 160 , anchor = tk.SE)
+        bookB.config(font=('Helvatical bold',17))
+        bookB.place(x = 570 , y = 50 , anchor = tk.CENTER)
     
     def book(self):
         msg = str(myID + ' ' + self.fromcity + ' ' + self.tocity + ' ' + self.time + ' ' + self.month + ' ' + self.date + ' ' + self.klass + ' ' + self.price)
         b = msg.encode('utf-16')
         conn.send(b)
 
-
+#genererar objekt för klassen Resa med hjälp av info. från filter. Objekten ska sedan bli egna frames, liknande tickets.
 def Search():
     #tar bort alla element i resultat framen, så att tickets inte stackas på varandra
     for widgets in rFrame.winfo_children():
-        if widgets == Scroll:
-            pass
-        else:
-            widgets.destroy()
+        widgets.destroy()
 
     resorList = []
 
     #Hämtar information från alla filter
-    for i in range(1,12):
+    for i in range(6):
         fromlist = []
         fromlist.append(FromStockholm.get())
         fromlist.append(FromMadrid.get())
@@ -225,7 +225,7 @@ def Search():
         classinput = []
 
         #skriver om filterlistornas information från binär information till tillgänglig text.
-        for i in range(0,5):
+        for i in range(6):
             if fromlist[i] == 0:
                 pass
             else:
@@ -236,11 +236,12 @@ def Search():
             else:
                 toinput.append(cities[i])
 
-        for i in range(0,2):
+        for i in range(3):
             if classlist[i] == 0:
                 pass
             else:
                 classinput.append(classes[i])
+        
         
         #Visar allt om filter ej är aktiverade(används inte)
         if len(frominput) == 0:
@@ -275,20 +276,145 @@ def Search():
         obj.Generate(obj.fromcity , obj.tocity , obj.time , obj.month , obj.date , obj.klass , obj.price)
 
 
-#beskrivning
+#går tillbaka till köpfältet från profil vyn
 def shop():
-    pass
-
-
-def profile():
-    if myID == 10:
+    global booking
+    if booking:
         pass
+    else:
+        booking = True
+        for widgets in pFrame1.winfo_children():
+            widgets.destroy()
+        pFrame1.place_forget()
+        for widgets in pFrame2.winfo_children():
+            widgets.destroy()
+        pFrame2.place_forget()
+        rebuild()
+
+
+#tar bort köpfältet
+def removeShop():
+    cFrame.place_forget()
+    fFrame.place_forget()
+    sFrame1.place_forget()
+    rFrame.place_forget()
+
+
+#tar bort specificerad resa från databasen
+def avboka(a):
+    b = a.encode('utf-16')
+    conn.send(b)
+    shop()
+    profile()
+
+
+#tar bort specificerad användare från databasen
+def tabort(a):
+    msg = a + ' a' + ' a' + ' a' + ' a' + ' a' + ' a' + ' a' + ' a'
+    b = msg.encode('utf-16')
+    conn.send(b)
+    shop()
+    profile()
+
+
+#går till profil vyn
+def profile():
+    global booking , myID
+    if booking:
+        booking = False
+        removeShop()
+        pFrame1.place(x = 100 , y = 200 , anchor = tk.NW)
+        pFrame2.place(x = 550 , y = 200 , anchor = tk.NW)
+
+        #Hanterar listan över bokningar
+        if myID == '16':#kollar efter admin
+            bokningar = tk.Label(pFrame1 , text = 'Bokningar' , bg = 'white')
+            bokningar.grid(column = 0 , row = 0 , sticky = tk.EW)
+            #skickar en request
+            msg = 'view the flights via admin'
+            b = msg.encode('utf-16')
+            conn.send(b)
+        else:
+            minabokningar = tk.Label(pFrame1 , text = 'Mina Bokningar' , bg = 'white')
+            minabokningar.grid(column = 0 , row = 0 , sticky = tk.EW)
+            #skickar en request
+            msg = 'view ' + myID + ' profile'
+            b = msg.encode('utf-16')
+            conn.send(b)
+        #använder infon för att verkställa listan
+        b = conn.recv(1024)
+        msg = b.decode('utf-16')
+        templist = msg.split('(')
+        templist.pop(0)
+        for i in range(len(templist)):
+            templist2 = templist[i].split(' ')
+            from functools import partial
+            avbokaFunc = partial(avboka, templist2[0])
+            btn = tk.Button(pFrame1 , text = 'Avboka' , command = avbokaFunc , bg = 'white' , height = 1 , bd = 0 , fg = 'blue')
+            txt = tk.Label(pFrame1 , text = templist[i] , bg = 'white')
+            txt.grid(column = 0 , row = i+1 , sticky = tk.W)
+            btn.grid(column = 1 , row = i+1 , sticky = tk.E)
+        
+        #Hanterar användar kortet/listan
+        if myID == '16':#kollar efter admin
+            användare = tk.Label(pFrame2 , text = 'Användare' , bg = 'white')
+            användare.grid(column = 0 , row = 0 , sticky = tk.EW)
+            #skickar en request
+            msg = 'view the list of profiles via admin'
+            b = msg.encode('utf-16')
+            conn.send(b)
+            #använder infon för att verkställa listan
+            b = conn.recv(1024)
+            msg = b.decode('utf-16')
+            templist3 = msg.split('(')
+            templist3.pop(0)
+            for i in range(len(templist3)):
+                templist4 = templist3[i].split(' ')
+                from functools import partial
+                avbokaFunc = partial(tabort, templist4[0])
+                btn = tk.Button(pFrame2 , text = 'Ta Bort' , command = avbokaFunc , bg = 'white' , height = 1 , bd = 0 , fg = 'blue')
+                txt = tk.Label(pFrame2 , text = templist3[i] , bg = 'white')
+                txt.grid(column = 0 , row = i+1 , sticky = tk.W)
+                btn.grid(column = 1 , row = i+1 , sticky = tk.E)
+        else:
+            profil = tk.Label(pFrame2 , text = 'Profil' , bg = 'white')
+            profil.grid(column = 0 , row = 0 , sticky = tk.EW)
+            #skickar en request
+            msg = 'view the profile of user ' + myID
+            b = msg.encode('utf-16')
+            conn.send(b)
+            #använder infon för att verkställa kortet
+            b = conn.recv(1024)
+            msg = b.decode('utf-16')
+            templist3 = msg.split('(')
+            templist3.pop(0)
+            for i in range(len(templist3)):
+                templist4 = templist3[i].split(' ')
+            
+            usrName = tk.Label(pFrame2 , text = 'Username:' , bg = 'white')
+            fName = tk.Label(pFrame2 , text = 'First Name:' , bg = 'white')
+            sName = tk.Label(pFrame2 , text = 'Second Name:' , bg = 'white')
+            passWord = tk.Label(pFrame2 , text = 'Password:' , bg = 'white')
+
+            usrName2 = tk.Label(pFrame2 , text = templist4[1] , bg = 'white')
+            fName2 = tk.Label(pFrame2 , text = templist4[2] , bg = 'white')
+            sName2 = tk.Label(pFrame2 , text = templist4[3] , bg = 'white')
+            passWord2 = tk.Label(pFrame2 , text = templist4[4] , bg = 'white')
+
+            usrName.grid(column = 0 , row = 1 , sticky = tk.W)
+            usrName2.grid(column = 1 , row = 1)
+            fName.grid(column = 0 , row = 2 , sticky = tk.W)
+            fName2.grid(column = 1 , row = 2)
+            sName.grid(column = 0 , row = 3 , sticky = tk.W)
+            sName2.grid(column = 1 , row = 3)
+            passWord.grid(column = 0 , row = 4 , sticky = tk.W)
+            passWord2.grid(column = 1 , row = 4)
     else:
         pass
 
 
 #deklarerar elementen för login screenen    
-canvas = tk.Canvas(c , bg = 'black' , width = 960 ,  height = 600 , bd = 0)
+canvas = tk.Canvas(c , bg = 'white' , width = 960 ,  height = 600 , bd = 0)
 canvas.pack()
 
 usernametitle = tk.Label(c , text = 'Username' , bd = 0 , bg = 'white')
@@ -385,12 +511,16 @@ tlb6 = tk.Checkbutton(fFrame , variable = ToTokyo       , onvalue = 1 , offvalue
 
 
 #deklarerar elementen för "resultat rutan"
-ScrollFrame = tk.Canvas(bg = 'lightgrey' , bd = 0 , height = 460 , width = 665)
 rFrame = tk.Canvas(bg = 'lightgrey' , bd = 0 , height = 460 , width = 660)
-ScrollFrame.pack_propagate(0)
-Scroll = tk.Scrollbar(ScrollFrame , orient = 'vertical')
-rFrame.config(yscrollcommand=Scroll.set)
-Scroll.config(command=rFrame.yview)
+rFrame.pack_propagate(0)
+
+
+#deklareral elementen till profil vyn
+pFrame1 = tk.Frame(c , bg = 'white' , height = 5000 , width = 200)
+pFrame1.grid_propagate(1)
+pFrame2 = tk.Frame(c , bg = 'white' , height = 5000 , width = 250)
+pFrame2.grid_propagate(1)
+
 
 
 #placerar ut alementen för loggin sidan
@@ -475,10 +605,16 @@ def start():
     sFrame2.place(anchor = tk.NW , x = 0 , y = 59)
 
     rFrame.place(anchor = tk.NW , x = 0 , y = 140)
-    ScrollFrame.place(anchor = tk.NW , x = 0 , y = 140)
-    Scroll.pack(side = tk.RIGHT , fill = tk.Y)
 
     Search()
+
+
+#bygger om hemsidan, menad för att återvända från profilvyn
+def rebuild():
+    cFrame.place(anchor = tk.NW , x = 0 , y = 60)
+    fFrame.place(anchor = tk.NW , x = 670 , y = 60)
+    sFrame1.place(anchor = tk.NW , x = 669 , y = 60)
+    rFrame.place(anchor = tk.NW , x = 0 , y = 140)
 
 
 #startar loopen
